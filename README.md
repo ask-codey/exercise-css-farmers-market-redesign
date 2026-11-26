@@ -2,7 +2,7 @@
 
 Exercise code for the lesson **Exercise: Redesign the Farmers Market Page** in the CSS in Depth course on [ask-codey.com](https://www.ask-codey.com).
 
-The Saturday Farmers Market's event page has everything on it (the vendors, a map, the schedule and a "Bring your own bag" notice), and it looks like a flyer stapled to a telephone pole. You'll redesign it in `styles.css`: a type scale, readable lines, a palette with enough contrast, room to breathe, and soft finishing touches on the vendor cards. Ten checks measure the page as you go, and a checklist covers what only your eyes can judge.
+The Saturday Farmers Market's event page has everything on it (the vendors, a map, the schedule and a "Bring your own bag" notice), and it looks like a flyer stapled to a telephone pole. You'll redesign it in `styles.css`: a type scale, readable lines, a palette with enough contrast, room to breathe, soft finishing touches on the vendor cards, and filters on a vendor's photo. Twelve checks measure the page as you go, and a checklist covers what only your eyes can judge.
 
 ## Before you start
 
@@ -10,10 +10,11 @@ You need VS Code with the Live Server extension, a current Chrome, Edge or Firef
 
 ## What's here
 
-- `index.html`: the market's page. Every part you'll style has a class: `.label`, `.when`, `.notice`, `.vendor`, `.tag`, `.status`, `.description`, `.booth`, `.sold-out`, `.map`, `.schedule` and `.about`. Ready to use: don't change it. The `.schedule` section holds a table; *Tables for Data: Rows, Columns and Styling Them* (Module 3) shows how to style one.
+- `index.html`: the market's page. Every part you'll style has a class: `.label`, `.when`, `.notice`, `.vendor`, `.tag`, `.status`, `.description`, `.booth`, `.sold-out`, `.vendor-photo`, `.map`, `.schedule` and `.about`. Ready to use: don't change it. The `.schedule` section holds a table; *Tables for Data: Rows, Columns and Styling Them* (Module 3) shows how to style one.
 - `images/map.svg`: the map of the parking lot. Ready to use.
+- `images/green-thumb-farm.jpg`: the photo of Green Thumb Farm's stand, 600 by 400 pixels, at the top of its card. Ready to use.
 - `styles.css`: the cluttered stylesheet the page has today, with the market's requests and brand colors in a comment at the top. For you to redesign: change, replace or delete any rule in it.
-- `page.test.js`: the ten checks. You don't need to change this file.
+- `page.test.js`: the twelve checks. You don't need to change this file.
 - `package.json`: tells npm what the checks need (`jsdom`, which reads your page and stylesheet the way a browser does). Ready to use.
 - `.gitignore`: keeps the `node_modules` folder that `npm install` makes out of Git. Ready to use.
 
@@ -30,6 +31,7 @@ You need VS Code with the Live Server extension, a current Chrome, Edge or Firef
    6. **A palette that passes contrast.** Every piece of text at a contrast ratio of at least 4.5 to 1 against what's behind it, or 3 to 1 for large text (24 pixels and up, or about 19 pixels and up in bold). Build your palette around the market's green and sunflower.
    7. **Finishing touches.** Vendor cards with rounded corners (`border-radius`) and a soft `box-shadow`: blurred, in a see-through color. Two layers look best.
    8. **The bag notice stands out,** on a background color of its own.
+   9. **Photos that match the day.** Green Thumb Farm's photo (`.vendor-photo`) was taken on a cloudy morning: give it a `filter` that makes its colors about 20% stronger. Then write a rule for `.sold-out .vendor-photo` that draws the photo in grays, ready for the Saturday Green Thumb Farm sells out: the volunteers add the class `sold-out` to its card, and only its photo switches off.
 4. **Squint again** and compare with your list from step 3. Then take an "after" screenshot.
 
 ## Check your work
@@ -46,7 +48,7 @@ Then run the checks, as often as you like:
 npm test
 ```
 
-Each check prints ✔ when it passes and ✖ when it doesn't yet. At first the link check passes (the starter already has the link line) and the other nine fail: that's expected, since the page hasn't been redesigned yet. Under **failing tests**, each one has a message that starts **Not yet:** and says what it measured. The contrast check lists the text that doesn't pass yet, with its ratio and its two colors, such as `p.booth "Booth 4": 1.61 to 1, needs 4.5 to 1 (text #cccccc on #ffffff)`. When the last lines say `pass 10` and `fail 0`, every requirement the checks can measure is met.
+Each check prints ✔ when it passes and ✖ when it doesn't yet. At first the link check passes (the starter already has the link line) and the other eleven fail: that's expected, since the page hasn't been redesigned yet. Under **failing tests**, each one has a message that starts **Not yet:** and says what it measured. The contrast check lists the text that doesn't pass yet, with its ratio and its two colors, such as `p.booth "Booth 4": 1.61 to 1, needs 4.5 to 1 (text #cccccc on #ffffff)`. When the last lines say `pass 12` and `fail 0`, every requirement the checks can measure is met.
 
 ## The rules
 
@@ -59,6 +61,7 @@ Each check prints ✔ when it passes and ✖ when it doesn't yet. At first the l
   - Everything in the main column lines up on one left edge.
   - The vendor cards have room inside them and a gap between them.
   - The sold-out vendor is clear without color: the words "Sold out for today" can be read.
+  - Green Thumb Farm's photo looks a little richer than before, and its words and tag keep their own colors.
   - Your before and after screenshots, side by side, look like two different sites.
 
 ## Tips
@@ -67,6 +70,7 @@ Each check prints ✔ when it passes and ✖ when it doesn't yet. At first the l
 - The developer tools' color picker shows any text's contrast ratio: right-click the text, choose **Inspect**, and click the color square beside its `color` in the **Styles** pane.
 - A dark text color on a light background, or the other way around, fixes most contrast problems. Light gray text and white text on a bright color are the usual culprits.
 - Start the shadow from `0 4px 12px rgb(0 0 0 / 0.1)`, then add a second, tighter layer after a comma.
+- `saturate(120%)` makes colors 20% stronger, and `grayscale(100%)` takes them all out. Put the filter on the photo, not the card: on the card, it would gray the vendor's name and labels too. To see the sold-out rule work, add `sold-out` to Green Thumb Farm's card in the developer tools (double-click its `class`), not in `index.html`.
 - Changed something and the page didn't? `npm test` and the browser both read the saved file: look for a white dot on the file's tab in VS Code, which means it has changes you haven't saved yet.
 
 ## Hand it in

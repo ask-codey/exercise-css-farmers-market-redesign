@@ -11,6 +11,8 @@
     6. Every piece of text at a contrast ratio of 4.5 to 1 or more (3 to 1 for large text).
     7. Vendor cards with rounded corners and a soft shadow.
     8. The bag notice on a background of its own, so it stands out.
+    9. Green Thumb Farm's photo (.vendor-photo) with its colors about 20% stronger, and a rule ready for the
+       Saturday a vendor with a photo sells out: .sold-out .vendor-photo drawn in grays.
 
   The market's brand colors, from its banner (use them, or build your own palette around them):
     market green  #2f6b3a

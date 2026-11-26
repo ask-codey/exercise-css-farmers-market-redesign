@@ -1,5 +1,6 @@
 // Checks the market page's redesign: it reads index.html and styles.css the way a browser does, then measures
-// the text sizes, line heights, line length, fonts, spacing, contrast and card styles your stylesheet gives it.
+// the text sizes, line heights, line length, fonts, spacing, contrast, card styles and photo filters your stylesheet
+// gives it.
 // Run it with: npm test (run npm install once first). You don't need to change this file.
 const { test } = require('node:test');
 const { existsSync, readFileSync } = require('node:fs');
@@ -365,4 +366,41 @@ test('requirement 8: the bag notice has a background of its own', () => {
   const mine = backgroundsBehind(chainOf(notice))[0];
   check(hasGradient || hex(page) !== hex(mine),
     `The bag notice's background (${hex(mine)}) is the same as the page's. Pick a different color from your palette, such as the market's sunflower.`);
+});
+
+// The amount in a filter function, such as saturate(120%) or saturate(1.2), as a number: 1.2. Null when it isn't there.
+function filterAmount(filter, name) {
+  for (const match of String(filter).matchAll(/([a-z-]+)\(\s*([\d.]+)(%?)\s*\)/g)) {
+    if (match[1] === name) return parseFloat(match[2]) / (match[3] === '%' ? 100 : 1);
+  }
+  return null;
+}
+
+const photo = one('.vendor-photo');
+const photoFilter = () => fillVars(photo, style(photo).filter || 'none');
+
+test('requirement 9: Green Thumb Farm\'s photo has its colors about 20% stronger, with filter', () => {
+  check(photo, 'index.html has changed: Green Thumb Farm\'s card should open with its photo, <img class="vendor-photo">. Download a fresh copy of index.html if you need to.');
+  const amount = filterAmount(photoFilter(), 'saturate');
+  check(amount !== null,
+    `Green Thumb Farm's photo (.vendor-photo) has filter: ${photoFilter()}. Its colors should be stronger: give it a filter with saturate(), such as saturate(120%).`);
+  check(amount >= 1.1 && amount <= 1.3,
+    `The photo's saturate() is ${Math.round(amount * 100)}%. 100% leaves the colors as they are; about 20% stronger is saturate(120%).`);
+});
+
+test('requirement 9: a sold-out vendor\'s photo is drawn in grays, and its card keeps its color', () => {
+  const card = photo.closest('.vendor');
+  card.classList.add('sold-out');
+  try {
+    const filter = photoFilter();
+    const grays = filterAmount(filter, 'grayscale');
+    const saturation = filterAmount(filter, 'saturate');
+    check((grays !== null && grays >= 1) || saturation === 0,
+      `With the class sold-out on its card, Green Thumb Farm's photo has filter: ${filter}. Write a rule for .sold-out .vendor-photo that draws the photo in grays: filter: grayscale(100%).`);
+    const cardFilter = fillVars(card, style(card).filter || 'none');
+    check(cardFilter === 'none' || cardFilter === '',
+      `A sold-out card has filter: ${cardFilter}, which changes its words and its red label too. Put the filter on the photo (.sold-out .vendor-photo), not on the card.`);
+  } finally {
+    card.classList.remove('sold-out');
+  }
 });
